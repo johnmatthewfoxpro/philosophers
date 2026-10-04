@@ -45,9 +45,10 @@ typedef struct	s_data
 	//timing
 }	t_data;
 
-int	parse_args(t_data *data, int argc, char **argv);
+int		parse_args(t_data *data, int argc, char **argv);
 
-int	create_threads(t_data *data);
+int		create_threads(t_data *data);
+void	join_thread(t_data *data);
 
 int		init_forks(t_data *data);
 void	assign_forks(t_data *data);

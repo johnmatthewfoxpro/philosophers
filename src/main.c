@@ -26,6 +26,7 @@ static int	init_data(t_data *data)
 		data->philos[i].eaten = 0;
 		data->philos[i].last_eat = 0;
 		data->philos[i].data = data;
+		printf("philo:%d\n", data->philos[i].id);
 		i++;
 	}
 	return (0);
@@ -53,6 +54,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(&data))
 		return (1);
+	join_thread(&data);
+
 	// run simulation
 
 	// printf("%d\n", data.number_of_philos);

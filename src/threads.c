@@ -17,8 +17,32 @@ static void	*philo_routine(void *arg)
 	t_philos	*philos;
 
 	philos = (t_philos *)arg;
-	printf("Philo %d is alive!\n", philos->id);
 	return (NULL);
+
+	// pthread_mutex_lock(philo->left_fork);
+	// print_status(philo, "has taken a fork");
+
+	// pthread_mutex_lock(philo->right_fork);
+	// print_status(philo, "has taken a fork");
+
+	// print_status(philo, "is eating");
+
+	// usleep(data->time_to_eat * 1000);
+
+	// pthread_mutex_unlock(philo->right_fork);
+	// pthread_mutex_unlock(philo->left_fork);
+}
+
+void	join_thread(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while(i < data->number_of_philos)
+	{
+		pthread_join(data->philos[i].thread, NULL);
+		i++;
+	}
 }
 
 int	create_threads(t_data *data)
@@ -34,3 +58,4 @@ int	create_threads(t_data *data)
 	}
 	return (0);
 }
+
