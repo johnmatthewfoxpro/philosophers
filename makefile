@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+         #
+#    By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/09/25 17:44:49 by j.fox             #+#    #+#              #
-#    Updated: 2026/09/25 17:44:49 by j.fox            ###   ########.fr        #
+#    Updated: 2026/10/05 14:25:12 by jfox             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,9 @@ INC_DIR = ./include
 SRC =	main.c \
 		parsing.c \
 		forks.c \
+		time.c \
 		threads.c \
-		cleaning.c 
+		cleaning.c
 
 NAME = philo
 OBJ = $(SRC:%.c=$(OBJECT_DIR)/%.o)
@@ -63,7 +64,7 @@ ping_valgrind:
 	@echo "==========================TESTING IN VALGRIND===========================\033[0m"
 
 valgrind: $(NAME) ping_valgrind
-	@echo clear && valgrind --leak-check=full --show-leak-kinds=all ./philo 5 50 50 100 
+	@echo clear && valgrind --leak-check=full --show-leak-kinds=all ./philo 5 50 50 100
 
 .PHONY: all clean fclean re tools ping_make ping_re ping_valgrind valgrind
 

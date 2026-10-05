@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+        */
+/*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 17:45:19 by j.fox             #+#    #+#             */
-/*   Updated: 2026/09/25 17:45:19 by j.fox            ###   ########.fr       */
+/*   Updated: 2026/10/05 14:28:51 by jfox             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ static int	init_sim(t_data *data)
 	if (init_forks(data))
 		return (1);
 	assign_forks(data);
+	set_time(data);
 	return (0);
 }
 
 int	main(int argc, char **argv)
-{	
+{
 	t_data	data;
 
 	if (argc < 5 || argc > 6)
@@ -58,14 +59,20 @@ int	main(int argc, char **argv)
 
 	// run simulation
 
-	// printf("%d\n", data.number_of_philos);
-	// printf("%d\n", data.time_to_die);
-	// printf("%d\n", data.time_to_eat);
-	// printf("%d\n", data.time_to_sleep);
-	// printf("%d\n", data.no_to_eat);
-	// printf("%d\n", data.philos[0].id);
-	// printf("%d\n", data.philos[1].id);
+	// int i = 0;
+	printf("time = %zd\n", data.sim_start);
+	// printf("philos = %d\n", data.number_of_philos);
+	// printf("die = %d\n", data.time_to_die);
+	// printf("eat = %d\n", data.time_to_eat);
+	// printf("sleep = %d\n", data.time_to_sleep);
+	// printf("meals = %d\n", data.no_to_eat);
+	// while (i < data.number_of_philos)
+	// {
+	// 	printf("%d\n", data.philos[i].id);
+	// 	i++;
+	// }
+	printf("elapsed = %zd\n", get_time() - data.sim_start);
 
 	clean(&data);
-	return (0);	
+	return (0);
 }

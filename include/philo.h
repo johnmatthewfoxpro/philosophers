@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+        */
+/*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 17:45:13 by j.fox             #+#    #+#             */
-/*   Updated: 2026/09/25 17:45:13 by j.fox            ###   ########.fr       */
+/*   Updated: 2026/10/05 14:25:01 by jfox             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@ typedef struct	s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				no_to_eat;
+	ssize_t			sim_start;
 	t_philos			*philos;
 	pthread_mutex_t	*forks;
 	//mutexes
-	//timing
 }	t_data;
 
 int		parse_args(t_data *data, int argc, char **argv);
+
+ssize_t	get_time(void);
+void	set_time(t_data *data);
 
 int		create_threads(t_data *data);
 void	join_thread(t_data *data);
