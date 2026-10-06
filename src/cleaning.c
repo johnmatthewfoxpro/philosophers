@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+        */
+/*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/27 15:55:51 by j.fox             #+#    #+#             */
-/*   Updated: 2026/09/27 15:55:51 by j.fox            ###   ########.fr       */
+/*   Updated: 2026/10/06 15:54:08 by jfox             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,18 @@ void	clean(t_data *data)
 	int	i;
 
 	i = 0;
-	if (data->philos)
-		free(data->philos);
 	if (data->forks)
 	{
 		while (i < data->number_of_philos)
 		{
 			pthread_mutex_destroy(&data->forks[i]);
+			pthread_mutex_destroy(&data->philos[i].meal_ok);
 			i++;
 		}
 		free(data->forks);
 	}
+	if (data->philos)
+		free(data->philos);
+	pthread_mutex_destroy(&data->print_ok);
 	return ;
 }

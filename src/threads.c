@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+        */
+/*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/27 16:08:28 by j.fox             #+#    #+#             */
-/*   Updated: 2026/09/27 16:08:28 by j.fox            ###   ########.fr       */
+/*   Updated: 2026/10/06 16:10:19 by jfox             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,28 @@
 
 static void	*philo_routine(void *arg)
 {
-	t_philos	*philos;
+	t_philos	*philo;
 
-	philos = (t_philos *)arg;
+	philo = (t_philos *)arg;
+
+	while (1)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_output(philo, "has taken a fork");
+		pthread_mutex_lock(philo->right_fork);
+		print_output(philo, "has taken a fork");
+		pthread_mutex_lock(&philo->meal_ok);
+		philo->last_eat = get_time();
+		pthread_mutex_unlock(&philo->meal_ok);
+		print_output(philo, "is eating");
+		usleep(philo->data->time_to_eat * 1000);
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+		print_output(philo, "is sleeping");
+		usleep(philo->data->time_to_sleep * 1000);
+		print_output(philo, "is thinking");
+	}
 	return (NULL);
-
-	// pthread_mutex_lock(philo->left_fork);
-	// print_status(philo, "has taken a fork");
-
-	// pthread_mutex_lock(philo->right_fork);
-	// print_status(philo, "has taken a fork");
-
-	// print_status(philo, "is eating");
-
-	// usleep(data->time_to_eat * 1000);
-
-	// pthread_mutex_unlock(philo->right_fork);
-	// pthread_mutex_unlock(philo->left_fork);
 }
 
 void	join_thread(t_data *data)
@@ -58,4 +63,3 @@ int	create_threads(t_data *data)
 	}
 	return (0);
 }
-
