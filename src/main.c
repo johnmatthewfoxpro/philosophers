@@ -30,7 +30,6 @@ static int	init_data(t_data *data)
 		data->philos[i].data = data;
 		if (pthread_mutex_init(&data->philos[i].meal_ok, NULL))
 			return (1);
-		printf("philo:%d\n", data->philos[i].id);
 		i++;
 	}
 	return (0);
@@ -61,20 +60,7 @@ int	main(int argc, char **argv)
 		return (1);
 	join_thread(&data);
 
-	// run simulation
-
-	// int i = 0;
 	printf("time = %zd\n", data.sim_start);
-	// printf("philos = %d\n", data.number_of_philos);
-	// printf("die = %d\n", data.time_to_die);
-	// printf("eat = %d\n", data.time_to_eat);
-	// printf("sleep = %d\n", data.time_to_sleep);
-	// printf("meals = %d\n", data.no_to_eat);
-	// while (i < data.number_of_philos)
-	// {
-	// 	printf("%d\n", data.philos[i].id);
-	// 	i++;
-	// }
 	printf("time = %zd\n", get_time());
 	printf("elapsed = %zd\n", get_time() - data.sim_start);
 

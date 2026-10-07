@@ -20,6 +20,7 @@ SRC =	main.c \
 		time.c \
 		utils.c \
 		threads.c \
+		sim.c \
 		monitor.c \
 		cleaning.c
 
@@ -66,7 +67,7 @@ ping_valgrind:
 	@echo "==========================TESTING IN VALGRIND===========================\033[0m"
 
 valgrind: $(NAME) ping_valgrind
-	@echo clear && valgrind --leak-check=full --show-leak-kinds=all ./philo 5 800 100 100
+	@echo clear && valgrind --leak-check=full --show-leak-kinds=all ./philo 5 100 200 200
 
 .PHONY: all clean fclean re tools ping_make ping_re ping_valgrind valgrind
 

@@ -67,5 +67,7 @@ int	parse_args(t_data *data, int argc, char **argv)
 		data->no_to_eat = ft_atoi(argv[5]);
 	else
 		data->no_to_eat = -1;
+	data->sim_fin = 0;
+	data->dead = 0;
 	return (0);
 }

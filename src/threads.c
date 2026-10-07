@@ -18,12 +18,28 @@ static void	*philo_routine(void *arg)
 
 	philo = (t_philos *)arg;
 
-	while (1)
+	while (!philo->data->dead)
 	{
-		pthread_mutex_lock(philo->left_fork);
-		print_output(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_output(philo, "has taken a fork");
+		if (philo->id % 2 == 0)
+		{
+			pthread_mutex_lock(philo->right_fork);
+			print_output(philo, "has taken a fork");
+
+			pthread_mutex_lock(philo->left_fork);
+			print_output(philo, "has taken a fork");
+		}
+		else
+		{
+			pthread_mutex_lock(philo->left_fork);
+			print_output(philo, "has taken a fork");
+
+			pthread_mutex_lock(philo->right_fork);
+			print_output(philo, "has taken a fork");
+		}
+		// pthread_mutex_lock(philo->left_fork);
+		// print_output(philo, "has taken a fork");
+		// pthread_mutex_lock(philo->right_fork);
+		// print_output(philo, "has taken a fork");
 		pthread_mutex_lock(&philo->meal_ok);
 		philo->last_eat = get_time();
 		pthread_mutex_unlock(&philo->meal_ok);
@@ -43,6 +59,7 @@ void	join_thread(t_data *data)
 	int	i;
 
 	i = 0;
+	pthread_join(data->monitor, NULL);
 	while(i < data->number_of_philos)
 	{
 		pthread_join(data->philos[i].thread, NULL);
@@ -61,5 +78,7 @@ int	create_threads(t_data *data)
 			return (1);
 		i++;
 	}
+	if (pthread_create(&data->monitor, NULL, monitor_routine, &data))
+		return (1);
 	return (0);
 }

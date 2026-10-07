@@ -25,7 +25,7 @@ typedef struct	s_philos
 {
 	int				id;
 	int				eaten;
-	size_t			last_eat;
+	ssize_t			last_eat;
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
@@ -40,10 +40,14 @@ typedef struct	s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				no_to_eat;
+	int				sim_fin;
+	int				dead;
 	ssize_t			sim_start;
 	t_philos		*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_ok;
+	pthread_mutex_t	dead_ok;
+	pthread_t		monitor;
 }	t_data;
 
 int		parse_args(t_data *data, int argc, char **argv);
@@ -56,6 +60,10 @@ void	join_thread(t_data *data);
 
 int		init_forks(t_data *data);
 void	assign_forks(t_data *data);
+
+void	death(t_data *data);
+int	simulate_death(t_data *data);
+void	*monitor_routine(void *arg);
 
 void	print_output(t_philos *philo, char *output);
 
