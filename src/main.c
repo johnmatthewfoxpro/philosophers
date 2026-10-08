@@ -6,7 +6,7 @@
 /*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 17:45:19 by j.fox             #+#    #+#             */
-/*   Updated: 2026/10/06 15:53:13 by jfox             ###   ########.fr       */
+/*   Updated: 2026/10/08 15:38:38 by jfox             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ static int	init_data(t_data *data)
 	if (!data->philos)
 		return (1);
 	if (pthread_mutex_init(&data->print_ok, NULL))
+		return (1);
+	if (pthread_mutex_init(&data->dead_ok, NULL))
+		return (1);
+	if (pthread_mutex_init(&data->finished_ok, NULL))
 		return (1);
 	while (i < data->number_of_philos)
 	{
@@ -38,9 +42,15 @@ static int	init_data(t_data *data)
 static int	init_sim(t_data *data)
 {
 	if (init_data(data))
+	{
+		clean(data);
 		return (1);
+	}
 	if (init_forks(data))
+	{
+		clean(data);
 		return (1);
+	}
 	assign_forks(data);
 	set_time(data);
 	return (0);
@@ -58,12 +68,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(&data))
 		return (1);
-	join_thread(&data);
-
-	printf("time = %zd\n", data.sim_start);
-	printf("time = %zd\n", get_time());
-	printf("elapsed = %zd\n", get_time() - data.sim_start);
-
+	if (data.number_of_philos > 1)
+		join_thread(&data);
 	clean(&data);
 	return (0);
 }

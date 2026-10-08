@@ -44,6 +44,12 @@ timestamp_in_ms X died
 `timestamp_in_ms` is the time since the beginning of the simulation and `X` is the philosopher's number.
 A philosopher's death must be displayed within **10 ms** of their actual death.
 
+You can add this line:
+```
+	printf("phil %d has eaten %d\n", philo->id, philo->eaten);
+```
+To the eat function in sim.c to watch live how many meals each philo has eaten.
+
 ## Threading & Mutexes
 Each philosopher must be represented by a separate thread.
 There is one fork between each pair of philosophers, meaning there are as many forks as philosophers.

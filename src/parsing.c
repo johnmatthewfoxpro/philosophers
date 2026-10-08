@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_parsing.c                                    :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+        */
+/*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/27 15:52:37 by j.fox             #+#    #+#             */
-/*   Updated: 2026/09/27 15:52:37 by j.fox            ###   ########.fr       */
+/*   Updated: 2026/10/08 15:09:51 by jfox             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	ft_atoi(char *str)
 {
-	int i;
-	int num;
-	
+	int	i;
+	int	num;
+
 	i = 0;
 	num = 0;
 	while (str[i])
@@ -43,14 +43,14 @@ static int	is_valid_number(char *arg)
 			return (1);
 		i++;
 	}
-	if (ft_atoi(arg)== 0)
+	if (ft_atoi(arg) == 0)
 		return (1);
 	return (0);
 }
 
 int	parse_args(t_data *data, int argc, char **argv)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (i < argc)
@@ -67,7 +67,7 @@ int	parse_args(t_data *data, int argc, char **argv)
 		data->no_to_eat = ft_atoi(argv[5]);
 	else
 		data->no_to_eat = -1;
-	data->sim_fin = 0;
+	data->all_eaten = 0;
 	data->dead = 0;
 	return (0);
 }

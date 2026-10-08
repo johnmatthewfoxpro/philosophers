@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+        */
+/*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/27 16:01:18 by j.fox             #+#    #+#             */
-/*   Updated: 2026/09/27 16:01:18 by j.fox            ###   ########.fr       */
+/*   Updated: 2026/10/08 14:17:28 by jfox             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ void	assign_forks(t_data *data)
 	i = 0;
 	while (i < data->number_of_philos)
 	{
-	data->philos[i].left_fork = &data->forks[i];
-	data->philos[i].right_fork = &data->forks[(i + 1) % data->number_of_philos];
-	i++;
+		data->philos[i].left_fork = &data->forks[i];
+		data->philos[i].right_fork = &data->forks[(i + 1)
+			% data->number_of_philos];
+		i++;
 	}
 	return ;
 }

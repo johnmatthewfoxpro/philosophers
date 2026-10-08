@@ -6,7 +6,7 @@
 /*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/27 15:55:51 by j.fox             #+#    #+#             */
-/*   Updated: 2026/10/06 15:54:08 by jfox             ###   ########.fr       */
+/*   Updated: 2026/10/08 15:38:56 by jfox             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,7 @@ void	clean(t_data *data)
 	if (data->philos)
 		free(data->philos);
 	pthread_mutex_destroy(&data->print_ok);
+	pthread_mutex_destroy(&data->dead_ok);
+	pthread_mutex_destroy(&data->finished_ok);
 	return ;
 }

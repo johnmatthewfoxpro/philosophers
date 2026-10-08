@@ -6,7 +6,7 @@
 #    By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/09/25 17:44:49 by j.fox             #+#    #+#              #
-#    Updated: 2026/10/06 16:10:06 by jfox             ###   ########.fr        #
+#    Updated: 2026/10/08 15:42:48 by jfox             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,7 @@ ping_valgrind:
 	@echo "==========================TESTING IN VALGRIND===========================\033[0m"
 
 valgrind: $(NAME) ping_valgrind
-	@echo clear && valgrind --leak-check=full --show-leak-kinds=all ./philo 5 100 200 200
+	@echo && valgrind --leak-check=full --show-leak-kinds=all ./philo 5 800 200 200 3
 
 .PHONY: all clean fclean re tools ping_make ping_re ping_valgrind valgrind
 
