@@ -3,16 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
+/*   By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/06 16:09:43 by jfox              #+#    #+#             */
-/*   Updated: 2026/10/08 15:42:33 by jfox             ###   ########.fr       */
+/*   Updated: 2026/10/10 12:14:52 by j.fox            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	all_eaten(t_data *data)
+int	simulate_finished(t_data *data)
+{
+	int	finished;
+
+	pthread_mutex_lock(&data->finished_ok);
+	finished = data->all_eaten;
+	pthread_mutex_unlock(&data->finished_ok);
+	return (finished);
+}
+
+static void	all_eaten(t_data *data)
 {
 	int	i;
 
@@ -39,11 +49,21 @@ int	simulate_death(t_data *data)
 	return (death);
 }
 
-void	death(t_data *data)
+static void	death(t_philos *philo)
 {
+	t_data	*data;
+	
+	data = philo->data;
+	pthread_mutex_lock(&data->print_ok);
 	pthread_mutex_lock(&data->dead_ok);
-	data->dead = 1;
+	if (!data->dead)
+	{
+		data->dead = 1;
+		printf("%zd %d died\n", get_time() - data->sim_start, philo->id);
+	}
 	pthread_mutex_unlock(&data->dead_ok);
+	pthread_mutex_unlock(&data->print_ok);
+	return ;
 }
 
 void	*monitor_routine(void *arg)
@@ -53,24 +73,23 @@ void	*monitor_routine(void *arg)
 	ssize_t	last_eat;
 
 	data = (t_data *)arg;
-	while (!simulate_death(data) && !data->all_eaten)
+	while (!simulate_death(data) && !simulate_finished(data))
 	{
 		i = 0;
 		while (i < data->number_of_philos)
 		{
-			all_eaten(data);
 			pthread_mutex_lock(&data->philos[i].meal_ok);
 			last_eat = data->philos[i].last_eat;
 			pthread_mutex_unlock(&data->philos[i].meal_ok);
 			if ((get_time() - last_eat) > data->time_to_die)
 			{
-				print_output(&data->philos[i], "died");
-				death(data);
+				death(&data->philos[i]);
 				return (NULL);
 			}
 			i++;
 		}
-		ft_usleep(100, data);
+		all_eaten(data);
+		ft_usleep(10, data);
 	}
 	return (NULL);
 }

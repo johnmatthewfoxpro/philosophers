@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfox <jfox.42angouleme@gmail.com>          +#+  +:+       +#+        */
+/*   By: j.fox <jfox.42angouleme@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 13:11:22 by jfox              #+#    #+#             */
-/*   Updated: 2026/10/08 14:16:20 by jfox             ###   ########.fr       */
+/*   Updated: 2026/10/10 12:15:02 by j.fox            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int	ft_usleep(size_t milliseconds, t_data *data)
 	start = get_time();
 	while ((get_time() - start) < milliseconds)
 	{
-		if (simulate_death(data))
+		if (simulate_death(data) || simulate_finished(data))
 			return (1);
-		usleep(200);
+		usleep(100);
 	}
 	return (0);
 }

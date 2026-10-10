@@ -28,20 +28,24 @@ void	clean(t_data *data)
 	int	i;
 
 	i = 0;
-	if (data->forks)
+	if (data->fork_mut)
 	{
 		while (i < data->number_of_philos)
 		{
 			pthread_mutex_destroy(&data->forks[i]);
-			pthread_mutex_destroy(&data->philos[i].meal_ok);
+			if (data->philos[i].meal_mut)
+				pthread_mutex_destroy(&data->philos[i].meal_ok);
 			i++;
 		}
 		free(data->forks);
 	}
 	if (data->philos)
 		free(data->philos);
-	pthread_mutex_destroy(&data->print_ok);
-	pthread_mutex_destroy(&data->dead_ok);
-	pthread_mutex_destroy(&data->finished_ok);
+	if (data->print_mut)
+		pthread_mutex_destroy(&data->print_ok);
+	if (data->dead_mut)
+		pthread_mutex_destroy(&data->dead_ok);
+	if (data->fin_mut)
+		pthread_mutex_destroy(&data->finished_ok);
 	return ;
 }

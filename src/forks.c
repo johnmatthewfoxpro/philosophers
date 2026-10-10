@@ -44,5 +44,6 @@ int	init_forks(t_data *data)
 		}
 		i++;
 	}
+	data->fork_mut = 1;
 	return (0);
 }

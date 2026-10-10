@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static int	init_data(t_data *data)
+static int	init_philos(t_data *data)
 {
 	int	i;
 
@@ -20,20 +20,16 @@ static int	init_data(t_data *data)
 	data->philos = malloc(sizeof(t_philos) * data->number_of_philos);
 	if (!data->philos)
 		return (1);
-	if (pthread_mutex_init(&data->print_ok, NULL))
-		return (1);
-	if (pthread_mutex_init(&data->dead_ok, NULL))
-		return (1);
-	if (pthread_mutex_init(&data->finished_ok, NULL))
-		return (1);
 	while (i < data->number_of_philos)
 	{
 		data->philos[i].id = i + 1;
 		data->philos[i].eaten = 0;
 		data->philos[i].last_eat = 0;
 		data->philos[i].data = data;
+		data->philos[i].meal_mut = 0;
 		if (pthread_mutex_init(&data->philos[i].meal_ok, NULL))
 			return (1);
+		data->philos[i].meal_mut = 1;
 		i++;
 	}
 	return (0);
@@ -41,7 +37,7 @@ static int	init_data(t_data *data)
 
 static int	init_sim(t_data *data)
 {
-	if (init_data(data))
+	if (init_philos(data))
 	{
 		clean(data);
 		return (1);
@@ -62,7 +58,7 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6)
 		return (0);
-	if (parse_args(&data, argc, argv))
+	if (init_data(&data, argc, argv))
 		return (1);
 	if (init_sim(&data))
 		return (1);

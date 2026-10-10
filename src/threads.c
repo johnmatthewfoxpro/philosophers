@@ -17,6 +17,7 @@ static void	single_philo(t_philos *philo)
 	print_output(philo, "has taken a fork");
 	ft_usleep(philo->data->time_to_die, philo->data);
 	print_output(philo, "died");
+	return ;
 }
 
 static void	*philo_routine(void *arg)
@@ -24,12 +25,18 @@ static void	*philo_routine(void *arg)
 	t_philos	*philo;
 
 	philo = (t_philos *)arg;
-	while (!simulate_death(philo->data) && !philo->data->all_eaten)
+	while (!simulate_death(philo->data) && !simulate_finished(philo->data))
 	{
-		pickup_fork(philo);
-		eat(philo);
+		if (pickup_fork(philo))
+			break ;
+		if (eat(philo))
+		{
+			drop_fork(philo);
+			break ;
+		}
 		drop_fork(philo);
-		philosophize_this(philo);
+		if (philosophize_this(philo))
+			break;
 	}
 	return (NULL);
 }
@@ -45,6 +52,7 @@ void	join_thread(t_data *data)
 		pthread_join(data->philos[i].thread, NULL);
 		i++;
 	}
+	return ;
 }
 
 int	create_threads(t_data *data)
@@ -61,10 +69,16 @@ int	create_threads(t_data *data)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL, philo_routine,
 				&data->philos[i]))
+		{
+			clean(data);
 			return (1);
+		}
 		i++;
 	}
 	if (pthread_create(&data->monitor, NULL, monitor_routine, data))
+	{
+		clean(data);
 		return (1);
+	}
 	return (0);
 }

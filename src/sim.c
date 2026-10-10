@@ -14,39 +14,89 @@
 
 int	full(t_philos *philo)
 {
+	int	eaten;
+
 	if (philo->data->no_to_eat == -1)
 		return (0);
-	if (philo->eaten >= philo->data->no_to_eat)
+	pthread_mutex_lock(&philo->meal_ok);
+	eaten = philo->eaten;
+	pthread_mutex_unlock(&philo->meal_ok);
+	if (eaten >= philo->data->no_to_eat)
 		return (1);
 	return (0);
 }
 
-void	pickup_fork(t_philos *philo)
+int	pickup_fork(t_philos *philo)
 {
+	// if (philo->id % 2 == 0)
+	// {
+	// 	pthread_mutex_lock(philo->right_fork);
+	// 	print_output(philo, "has taken a fork");
+	// 	pthread_mutex_lock(philo->left_fork);
+	// 	print_output(philo, "has taken a fork");
+	// }
+	// else
+	// {
+	// 	pthread_mutex_lock(philo->left_fork);
+	// 	print_output(philo, "has taken a fork");
+	// 	pthread_mutex_lock(philo->right_fork);
+	// 	print_output(philo, "has taken a fork");
+	// }
 	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_output(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-		print_output(philo, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_output(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_output(philo, "has taken a fork");
-	}
+    {
+        pthread_mutex_lock(philo->right_fork);
+        if (simulate_death(philo->data) || simulate_finished(philo->data))
+        {
+            pthread_mutex_unlock(philo->right_fork);
+            return (1);
+        }
+        print_output(philo, "has taken a fork");
+
+        pthread_mutex_lock(philo->left_fork);
+        if (simulate_death(philo->data) || simulate_finished(philo->data))
+        {
+            pthread_mutex_unlock(philo->left_fork);
+            pthread_mutex_unlock(philo->right_fork);
+            return (1);
+        }
+        print_output(philo, "has taken a fork");
+    }
+    else
+    {
+        pthread_mutex_lock(philo->left_fork);
+        if (simulate_death(philo->data) || simulate_finished(philo->data))
+        {
+            pthread_mutex_unlock(philo->left_fork);
+            return (1);
+        }
+        print_output(philo, "has taken a fork");
+
+        pthread_mutex_lock(philo->right_fork);
+        if (simulate_death(philo->data) || simulate_finished(philo->data))
+        {
+            pthread_mutex_unlock(philo->right_fork);
+            pthread_mutex_unlock(philo->left_fork);
+            return (1);
+        }
+        print_output(philo, "has taken a fork");
+    }
+    return (0);
 }
 
-void	eat(t_philos *philo)
+int	eat(t_philos *philo)
 {
+	if (simulate_death(philo->data) || simulate_finished(philo->data))
+		return (1);
 	pthread_mutex_lock(&philo->meal_ok);
 	philo->last_eat = get_time();
-	philo->eaten += 1;
 	pthread_mutex_unlock(&philo->meal_ok);
 	print_output(philo, "is eating");
-	ft_usleep(philo->data->time_to_eat, philo->data);
+	if (ft_usleep(philo->data->time_to_eat, philo->data))
+		return (1);
+	pthread_mutex_lock(&philo->meal_ok);
+	philo->eaten += 1;
+	pthread_mutex_unlock(&philo->meal_ok);
+	return (0);
 }
 
 void	drop_fork(t_philos *philo)
@@ -61,11 +111,18 @@ void	drop_fork(t_philos *philo)
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
 	}
+	return ;
 }
 
-void	philosophize_this(t_philos *philo)
+int	philosophize_this(t_philos *philo)
 {
+	if (simulate_death(philo->data) || simulate_finished(philo->data))
+		return (1);
 	print_output(philo, "is sleeping");
-	ft_usleep(philo->data->time_to_sleep, philo->data);
+	if (ft_usleep(philo->data->time_to_sleep, philo->data))
+		return (1);
+	if (simulate_death(philo->data) || simulate_finished(philo->data))
+		return (1);
 	print_output(philo, "is thinking");
+	return (0);
 }

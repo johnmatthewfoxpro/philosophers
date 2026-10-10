@@ -67,7 +67,7 @@ ping_valgrind:
 	@echo "==========================TESTING IN VALGRIND===========================\033[0m"
 
 valgrind: $(NAME) ping_valgrind
-	@echo && valgrind --leak-check=full --show-leak-kinds=all ./philo 5 800 200 200 3
+	@echo && valgrind --leak-check=full --show-leak-kinds=all ./philo 2 800 200 200 2
 
 .PHONY: all clean fclean re tools ping_make ping_re ping_valgrind valgrind
 

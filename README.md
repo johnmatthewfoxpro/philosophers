@@ -100,6 +100,7 @@ With the optional meal limit:
 * [The Dining Philosophers Problem](https://en.wikipedia.org/wiki/Dining_philosophers_problem)
 * [Git Lab guide](https://42-fran-byte-f94097.gitlab.io/docs/philosophers/philosophers-approach-en/#/)
 * [Medium guide](https://medium.com/@denaelgammal/dining-philosophers-problem-42-project-guide-mandatory-part-a20fb8dc530e)
+* [Ft_usleep](https://medium.com/@ruinadd/philosophers-42-guide-the-dining-philosophers-problem-893a24bc0fe2)
 * `pthread` documentation
 * `pthread_mutex` documentation
 * `gettimeofday` documentation
